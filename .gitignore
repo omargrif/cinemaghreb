@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+.next/
+out/
+dist/
+
+# Data artifacts — large / regenerable, not committed. Small sample
+# outputs for demonstration purposes go in data/sample/ instead.
+data/raw/
+data/processed/
+chroma_db/
+*.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

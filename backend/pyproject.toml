@@ -1,0 +1,43 @@
+[project]
+name = "cinemaghreb-backend"
+version = "0.1.0"
+description = "CineMaghreb Vibe Search — backend (data collection, API, semantic search)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "requests>=2.32",
+    "tenacity>=9.0",
+    "python-dotenv>=1.0",
+    "pandas>=2.2",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "tqdm>=4.66",
+    "rapidfuzz>=3.10",
+    "sqlalchemy>=2.0",
+    "psycopg[binary]>=3.2",
+    "google-genai>=1.0",
+    # Phase 2 (embeddings / vector search / dimensionality reduction).
+    "sentence-transformers>=3.2",
+    "chromadb>=0.5",
+    "umap-learn>=0.5",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.3",
+    "pytest-mock>=3.14",
+    "responses>=0.25",
+    "ruff>=0.7",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

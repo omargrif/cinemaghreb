@@ -1,0 +1,515 @@
+:root {
+  color-scheme: light;
+
+  --paper: #f3efe4;
+  --paper-page: #f8f5ed;
+  --paper-raised: #fdfbf6;
+  --ink: #1c1a15;
+  --ink-soft: #57523f;
+  --ink-faint: #8b8471;
+  --rule: #cec7b3;
+  --rule-strong: #1c1a15;
+  --indigo: #2b3a6b;
+  --terracotta: #a8492a;
+
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  font-family: var(--ui);
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  /* Faint paper tooth, so the surface reads as printed stock rather than a flat fill. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Sharp corners throughout: this is a printed catalogue, not a dashboard. */
+button {
+  padding: 8px 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+button:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper-raised);
+}
+
+button:disabled {
+  border-color: var(--rule);
+  color: var(--ink-faint);
+  cursor: default;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+button.secondary {
+  border-color: var(--rule);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+code {
+  padding: 1px 5px;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.85em;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
+
+/* ---------------------------------------------------------------- masthead */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px 44px;
+  padding: 18px 28px 14px;
+  border-bottom: 2px solid var(--rule-strong);
+  background: var(--paper-page);
+}
+
+.brand h1 {
+  font-size: 2rem;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  line-height: 1;
+}
+
+.brand p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.search {
+  flex: 1 1 440px;
+  min-width: 0;
+}
+
+.search form {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* Underline rather than a box: closer to a form on a printed index card. */
+.search input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-strong);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--display);
+  font-size: 1.05rem;
+}
+
+.search input::placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-top: 12px;
+}
+
+.chip {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+}
+
+.chip:hover:not(:disabled) {
+  border-bottom-color: var(--terracotta);
+  background: transparent;
+  color: var(--terracotta);
+}
+
+/* -------------------------------------------------------------------- body */
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  min-height: 0;
+}
+
+.map-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.toolbar select {
+  margin-left: 10px;
+  padding: 3px 6px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+}
+
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.map svg {
+  display: block;
+  cursor: crosshair;
+}
+
+.map svg:active {
+  cursor: grabbing;
+}
+
+.map-point {
+  cursor: pointer;
+  transition: fill-opacity 0.2s;
+}
+
+.map-tooltip {
+  position: absolute;
+  display: grid;
+  max-width: 240px;
+  padding: 7px 11px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  box-shadow: 3px 3px 0 rgba(28, 26, 21, 0.14);
+  pointer-events: none;
+}
+
+.map-tooltip strong {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.map-tooltip span {
+  color: var(--ink-soft);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.map-legend {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  display: grid;
+  gap: 5px;
+  max-height: 48%;
+  margin: 0;
+  padding: 12px 14px;
+  overflow: auto;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  list-style: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+
+.map-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Square swatches echo the sharp-cornered language of the rest of the page. */
+.swatch {
+  width: 9px;
+  height: 9px;
+}
+
+.map-reset {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  padding: 5px 12px;
+  background: var(--paper-raised);
+  font-size: 0.64rem;
+}
+
+/* -------------------------------------------------------------- side panel */
+
+.side-panel {
+  padding: 22px 24px 40px;
+  overflow-y: auto;
+  border-left: 2px solid var(--rule-strong);
+  background: var(--paper-page);
+}
+
+h2 {
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.72rem;
+  font-family: var(--ui);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.state {
+  margin: 20px 24px;
+  color: var(--ink-soft);
+}
+
+.side-panel .state {
+  margin: 0 0 14px;
+}
+
+.error {
+  color: var(--terracotta);
+}
+
+.hint {
+  color: var(--ink-soft);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.meta {
+  margin: 2px 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+/* ------------------------------------------------------------ results list */
+
+.results {
+  counter-reset: entry;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.results li {
+  counter-increment: entry;
+  border-bottom: 1px solid var(--rule);
+}
+
+.results button {
+  display: grid;
+  grid-template-columns: auto 34px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 2px;
+  border: 0;
+  font: inherit;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+}
+
+.results button:hover:not(:disabled) {
+  background: var(--paper-raised);
+  color: inherit;
+}
+
+/* Catalogue numbering, drawn from the list itself rather than the markup. */
+.results button::before {
+  content: counter(entry, decimal-leading-zero);
+  color: var(--ink-faint);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.results img,
+.poster-placeholder {
+  width: 34px;
+  height: 50px;
+  border: 1px solid var(--rule);
+  object-fit: cover;
+  background: var(--paper-raised);
+}
+
+.result-text {
+  display: grid;
+  min-width: 0;
+}
+
+.result-text strong {
+  font-family: var(--display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.score {
+  align-self: start;
+  padding-top: 2px;
+  color: var(--terracotta);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ detail */
+
+.detail .back {
+  margin-bottom: 18px;
+  padding: 4px 11px;
+  font-size: 0.62rem;
+}
+
+.detail-head {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.detail-head img {
+  flex: none;
+  width: 104px;
+  border: 1px solid var(--rule-strong);
+}
+
+/* Scoped to the head: the nested "films à l'ambiance proche" heading is a
+   section label like any other, and keeps the small-caps treatment. */
+.detail-head h2 {
+  margin-bottom: 8px;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-family: var(--display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+.year {
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+.detail section {
+  margin-top: 28px;
+}
+
+.detail p {
+  font-size: 0.93rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 12px;
+}
+
+.tag {
+  padding: 2px 9px;
+  border: 1px solid var(--indigo);
+  color: var(--indigo);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* The mood line is the editorial voice of the page — set it like a pull quote. */
+.mood {
+  margin: 14px 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--terracotta);
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .app {
+    display: block;
+    height: auto;
+  }
+
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .map-panel {
+    height: 60vh;
+  }
+
+  .side-panel {
+    border-top: 2px solid var(--rule-strong);
+    border-left: 0;
+  }
+}
