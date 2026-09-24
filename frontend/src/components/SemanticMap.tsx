@@ -23,23 +23,6 @@ const PADDING = 36;
 const MAX_LEGEND_ENTRIES = 9;
 const OTHER_LABEL = "Autres";
 
-/** Inks chosen to sit on the cream page and stay apart from each other. */
-const INK_PALETTE = [
-  "#2b3a6b",
-  "#a8492a",
-  "#436b5f",
-  "#b08315",
-  "#6d3560",
-  "#1f6f77",
-  "#8a5524",
-  "#55603a",
-  "#93304a",
-];
-const OTHER_COLOR = "#8b8471";
-
-const SELECTED_STROKE = "#1c1a15";
-const HIGHLIGHT_STROKE = "rgba(28, 26, 21, 0.7)";
-
 const regionNames = new Intl.DisplayNames(["fr"], { type: "region" });
 
 function categoryOf(movie: PositionedMovie, colorBy: ColorBy): string {
@@ -69,12 +52,11 @@ function buildPalette(movies: PositionedMovie[], colorBy: ColorBy) {
     .map(([category]) => category);
   if (top.length < counts.size) top.push(OTHER_LABEL);
 
-  const colorOf = new Map(
-    top.map((category, i) => [category, category === OTHER_LABEL ? OTHER_COLOR : INK_PALETTE[i % INK_PALETTE.length]]),
-  );
+  const colorOf = new Map(top.map((category, i) => [category, d3.schemeTableau10[Math.min(i, 9)]]));
+  const otherColor = d3.schemeTableau10[9];
   return {
-    legend: top.map((category) => ({ category, color: colorOf.get(category) ?? OTHER_COLOR })),
-    colorFor: (movie: PositionedMovie) => colorOf.get(categoryOf(movie, colorBy)) ?? OTHER_COLOR,
+    legend: top.map((category) => ({ category, color: colorOf.get(category) ?? otherColor })),
+    colorFor: (movie: PositionedMovie) => colorOf.get(categoryOf(movie, colorBy)) ?? otherColor,
   };
 }
 
@@ -165,8 +147,8 @@ export function SemanticMap({ movies, colorBy, highlighted, selectedId, onSelect
               cy={screenY(movie)}
               r={radius}
               fill={palette.colorFor(movie)}
-              fillOpacity={dimmed ? 0.18 : 0.85}
-              stroke={isSelected ? SELECTED_STROKE : isHighlighted ? HIGHLIGHT_STROKE : "none"}
+              fillOpacity={dimmed ? 0.15 : 0.9}
+              stroke={isSelected ? "#fff" : isHighlighted ? "#ffffffcc" : "none"}
               strokeWidth={isSelected ? 2.5 : 1.5}
               className="map-point"
               onMouseEnter={() => setHovered(movie)}
